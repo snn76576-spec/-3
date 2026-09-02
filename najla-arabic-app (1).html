@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منصة أ. نجلاء لغتي العربية - الصف السادس الابتدائي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal-deep:#0E4B43;
+    --teal-darker:#082E2A;
+    --gold:#C79A3D;
+    --gold-light:#E4C570;
+    --paper:#F6F1E3;
+    --paper-2:#EFE7D2;
+    --ink:#20231F;
+    --maroon:#8B3A3A;
+    --green-ok:#2E6B4F;
+    --line:#D8CBA4;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Tajawal',sans-serif;
+    min-height:100vh;
+  }
+  ::selection{background:var(--gold-light);}
+
+  /* ===== decorative geometric pattern ===== */
+  .motif{
+    position:absolute; inset:0; opacity:.14; pointer-events:none;
+    background-image:
+      repeating-linear-gradient(45deg, var(--gold) 0 1.5px, transparent 1.5px 40px),
+      repeating-linear-gradient(-45deg, var(--gold) 0 1.5px, transparent 1.5px 40px);
+  }
+
+  header{
+    position:relative; overflow:hidden;
+    background:linear-gradient(180deg,var(--teal-deep),var(--teal-darker));
+    color:var(--paper);
+    padding:34px 20px 26px;
+    text-align:center;
+    border-bottom:4px solid var(--gold);
+  }
+  header .eyebrow-free{
+    font-size:15px; letter-spacing:.5px; color:var(--gold-light); margin:0 0 6px;
+  }
+  header h1{
+    font-family:'Aref Ruqaa',serif;
+    font-size:40px;
+    margin:0 0 6px;
+    font-weight:700;
+    color:#fff;
+  }
+  header p.sub{
+    margin:0 auto; max-width:480px; font-size:15px; line-height:1.9; color:#E7E0CC;
+  }
+
+  nav.tabs{
+    position:sticky; top:0; z-index:30;
+    display:flex; overflow-x:auto; gap:0;
+    background:var(--teal-darker);
+    border-bottom:2px solid var(--gold);
+  }
+  nav.tabs button{
+    flex:1 0 auto;
+    background:transparent; border:none; color:#CFE3DC;
+    font-family:'Tajawal',sans-serif; font-size:14.5px; font-weight:700;
+    padding:14px 10px; cursor:pointer; white-space:nowrap;
+    border-bottom:3px solid transparent;
+    transition:background .15s ease, color .15s ease;
+  }
+  nav.tabs button.active{
+    color:#fff; background:var(--teal-deep); border-bottom-color:var(--gold);
+  }
+  nav.tabs button:hover{ color:#fff; }
+
+  main{ max-width:760px; margin:0 auto; padding:22px 16px 60px; }
+  section.view{ display:none; animation:fadein .25s ease; }
+  section.view.active{ display:block; }
+  @keyframes fadein{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+
+  /* ===== home ===== */
+  .home-hero{
+    background:var(--teal-deep); color:#fff; border-radius:14px; padding:26px 20px;
+    position:relative; overflow:hidden; margin-bottom:22px;
+    border:1px solid var(--teal-darker);
+  }
+  .home-hero .motif{ opacity:.10; }
+  .home-hero h2{ font-family:'Aref Ruqaa',serif; font-size:26px; margin:0 0 10px; position:relative; }
+  .home-hero p{ position:relative; line-height:1.9; font-size:14.5px; color:#E6E0CC; margin:0; }
+
+  .stat-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:22px; }
+  .stat{
+    background:var(--paper-2); border:1px solid var(--line); border-radius:10px;
+    text-align:center; padding:14px 6px;
+  }
+  .stat b{ display:block; font-size:22px; color:var(--teal-deep); font-family:'Aref Ruqaa',serif; }
+  .stat span{ font-size:11.5px; color:#5b5445; }
+
+  .lesson-grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .lesson-chip{
+    background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px;
+    cursor:pointer; text-align:right; transition:border-color .15s ease, transform .1s ease;
+  }
+  .lesson-chip:hover{ border-color:var(--gold); transform:translateY(-1px); }
+  .lesson-chip .num{ color:var(--gold); font-weight:900; font-size:13px; }
+  .lesson-chip .name{ display:block; font-weight:700; font-size:14px; margin-top:3px; }
+
+  h2.section-title{
+    font-family:'Aref Ruqaa',serif; font-size:24px; color:var(--teal-deep);
+    margin:0 0 4px; border-bottom:2px solid var(--gold); padding-bottom:10px;
+  }
+  p.section-desc{ color:#5b5445; font-size:13.5px; margin:8px 0 18px; line-height:1.8; }
+
+  /* ===== lessons (accordion) ===== */
+  .lesson{
+    background:#fff; border:1px solid var(--line); border-radius:12px; margin-bottom:12px; overflow:hidden;
+  }
+  .lesson-head{
+    display:flex; align-items:center; gap:10px; padding:14px 16px; cursor:pointer; background:var(--paper-2);
+  }
+  .lesson-head .badge{
+    background:var(--teal-deep); color:#fff; width:30px; height:30px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-family:'Aref Ruqaa',serif; font-size:14px; flex-shrink:0;
+  }
+  .lesson-head h3{ margin:0; font-size:15.5px; flex:1; }
+  .lesson-head .arrow{ transition:transform .2s ease; color:var(--gold); font-size:14px; }
+  .lesson.open .arrow{ transform:rotate(180deg); }
+  .lesson-body{ display:none; padding:16px; }
+  .lesson.open .lesson-body{ display:block; }
+  .lesson-body h4{ margin:14px 0 6px; font-size:13.5px; color:var(--maroon); }
+  .lesson-body h4:first-child{ margin-top:0; }
+  .lesson-body p{ line-height:2; font-size:14.5px; margin:0; }
+  .examples{ list-style:none; margin:0; padding:0; }
+  .examples li{
+    background:var(--paper); border-right:3px solid var(--gold); padding:8px 12px;
+    margin-bottom:6px; border-radius:6px; font-size:14.5px; line-height:1.7;
+  }
+
+  /* ===== quiz ===== */
+  .qcard{
+    background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px; margin-bottom:14px;
+  }
+  .qcard .qtext{ font-weight:700; font-size:15px; margin-bottom:12px; line-height:1.8; }
+  .opt{
+    display:block; width:100%; text-align:right; background:var(--paper);
+    border:1.5px solid var(--line); border-radius:8px; padding:11px 14px; margin-bottom:8px;
+    font-family:'Tajawal',sans-serif; font-size:14px; cursor:pointer; color:var(--ink);
+    transition:all .12s ease;
+  }
+  .opt:hover{ border-color:var(--gold); }
+  .opt.correct{ background:#E4F1E9; border-color:var(--green-ok); color:var(--green-ok); font-weight:700; }
+  .opt.wrong{ background:#F6E6E6; border-color:var(--maroon); color:var(--maroon); font-weight:700; }
+  .opt[disabled]{ cursor:default; }
+  .explain{
+    margin-top:10px; font-size:13px; background:var(--paper-2); border-radius:8px; padding:10px 12px;
+    color:#4a4536; display:none; line-height:1.8;
+  }
+  .explain.show{ display:block; }
+
+  .quiz-toolbar{
+    display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:16px;
+    background:var(--teal-deep); color:#fff; border-radius:10px; padding:12px 16px;
+  }
+  .quiz-toolbar b{ font-family:'Aref Ruqaa',serif; font-size:18px; color:var(--gold-light); }
+  .btn{
+    background:var(--gold); color:var(--teal-darker); border:none; border-radius:8px;
+    padding:10px 18px; font-weight:900; font-size:13.5px; cursor:pointer; font-family:'Tajawal',sans-serif;
+  }
+  .btn:hover{ background:var(--gold-light); }
+  .btn.ghost{ background:transparent; color:#fff; border:1.5px solid rgba(255,255,255,.5); }
+
+  .score-banner{
+    text-align:center; padding:26px 16px; background:#fff; border:2px dashed var(--gold);
+    border-radius:12px; display:none;
+  }
+  .score-banner.show{ display:block; }
+  .score-banner .big{ font-family:'Aref Ruqaa',serif; font-size:40px; color:var(--teal-deep); }
+
+  /* ===== infographics ===== */
+  .flip-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .flip{ perspective:1000px; height:190px; cursor:pointer; }
+  .flip-inner{
+    position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d;
+  }
+  .flip.on .flip-inner{ transform:rotateY(180deg); }
+  .flip-face{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:12px;
+    padding:14px; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;
+  }
+  .flip-front{ background:var(--teal-deep); color:#fff; border:1px solid var(--teal-darker); }
+  .flip-front .n{ font-family:'Aref Ruqaa',serif; font-size:30px; color:var(--gold-light); }
+  .flip-front .t{ font-weight:700; margin-top:6px; font-size:14.5px; }
+  .flip-front .h{ font-size:11px; margin-top:10px; color:#CFE3DC; }
+  .flip-back{
+    background:#fff; border:1.5px solid var(--gold); transform:rotateY(180deg);
+    font-size:12.5px; line-height:1.8; overflow-y:auto;
+  }
+  .flip-back b{ color:var(--maroon); display:block; margin-bottom:4px; font-size:12px;}
+
+  /* ===== videos ===== */
+  .video-grid{ display:grid; grid-template-columns:1fr; gap:12px; }
+  .vcard{
+    display:flex; gap:12px; align-items:center; background:#fff; border:1px solid var(--line);
+    border-radius:12px; padding:12px; text-decoration:none; color:var(--ink);
+  }
+  .vthumb{
+    width:64px; height:64px; border-radius:10px; background:var(--teal-deep); flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .vthumb svg{ width:22px; height:22px; }
+  .vcard .vt{ flex:1; }
+  .vcard .vt b{ display:block; font-size:14.5px; margin-bottom:3px; }
+  .vcard .vt span{ font-size:12px; color:#6b6552; }
+  .vcard .go{ color:var(--gold); font-size:20px; }
+
+  footer{
+    text-align:center; padding:24px; font-size:12px; color:#8a836c; background:var(--paper-2);
+    border-top:1px solid var(--line);
+  }
+
+  @media (min-width:600px){
+    .lesson-grid{ grid-template-columns:1fr 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="motif"></div>
+  <p class="eyebrow-free">لغتي العربية · الصف السادس الابتدائي</p>
+  <h1>أ. نجلاء</h1>
+  <p class="sub">منصّة شاملة لشرح مادة اللغة العربية، تجمع الدروس والاختبارات التفاعلية والانفوجرافيك ومصادر الفيديو في مكان واحد للمعلم والطالب.</p>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button data-view="home" class="active">الرئيسية</button>
+  <button data-view="lessons">الدروس</button>
+  <button data-view="quiz">اختبارات تفاعلية</button>
+  <button data-view="info">انفوجرافيك</button>
+  <button data-view="videos">فيديوهات</button>
+</nav>
+
+<main>
+
+  <!-- ===================== HOME ===================== -->
+  <section class="view active" id="view-home">
+    <div class="home-hero">
+      <div class="motif"></div>
+      <h2>مرحبًا بكم في فصل أ. نجلاء</h2>
+      <p>هذا التطبيق مُعدّ لخدمة معلمة اللغة العربية في تجهيز الحصة وتثبيت المعلومة لدى الطلاب، ويغطي أبرز موضوعات النحو المقررة على الصف السادس الابتدائي، مع تدريبات تصحح نفسها بنفسها فور الإجابة.</p>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><b>8</b><span>دروس نحوية</span></div>
+      <div class="stat"><b>32</b><span>سؤال تفاعلي</span></div>
+      <div class="stat"><b>8</b><span>بطاقة انفوجرافيك</span></div>
+      <div class="stat"><b>8</b><span>مصدر فيديو</span></div>
+    </div>
+
+    <h2 class="section-title">الدروس بنظرة سريعة</h2>
+    <p class="section-desc">اضغطي على أي درس للانتقال إلى شرحه المفصّل مباشرة.</p>
+    <div class="lesson-grid" id="home-lesson-grid"></div>
+  </section>
+
+  <!-- ===================== LESSONS ===================== -->
+  <section class="view" id="view-lessons">
+    <h2 class="section-title">شرح الدروس</h2>
+    <p class="section-desc">كل درس يحتوي على القاعدة، أمثلة معربة، وتدريب مصغّر فوري للتأكد من الفهم.</p>
+    <div id="lessons-list"></div>
+  </section>
+
+  <!-- ===================== QUIZ ===================== -->
+  <section class="view" id="view-quiz">
+    <h2 class="section-title">اختبار تفاعلي شامل</h2>
+    <p class="section-desc">32 سؤالًا على جميع دروس المنهج، مع تصحيح فوري وتفسير للإجابة.</p>
+    <div class="quiz-toolbar">
+      <span>السؤال <b id="q-index">1</b> / <span id="q-total">32</span></span>
+      <button class="btn ghost" id="restart-quiz">إعادة البدء</button>
+    </div>
+    <div id="quiz-holder"></div>
+    <div class="score-banner" id="score-banner">
+      <div class="big" id="score-big">0 / 32</div>
+      <p id="score-msg" style="margin:8px 0 16px;color:#5b5445;"></p>
+      <button class="btn" id="retry-btn">إعادة المحاولة</button>
+    </div>
+  </section>
+
+  <!-- ===================== INFOGRAPHICS ===================== -->
+  <section class="view" id="view-info">
+    <h2 class="section-title">بطاقات انفوجرافيك</h2>
+    <p class="section-desc">اضغطي على البطاقة لقلبها ورؤية ملخص القاعدة — مناسبة للعرض على السبورة الذكية.</p>
+    <div class="flip-grid" id="flip-grid"></div>
+  </section>
+
+  <!-- ===================== VIDEOS ===================== -->
+  <section class="view" id="view-videos">
+    <h2 class="section-title">مصادر الفيديو</h2>
+    <p class="section-desc">روابط بحث مباشرة على يوتيوب لكل درس، لاختيار الشرح المرئي المناسب لفصلك.</p>
+    <div class="video-grid" id="video-grid"></div>
+  </section>
+
+</main>
+
+<footer>منصّة أ. نجلاء — لغتي العربية · الصف السادس الابتدائي</footer>
+
+<script>
+const LESSONS = [
+{
+  id:1, title:"الفعل المضارع وعلامات إعرابه",
+  explain:"الفعل المضارع هو ما دلّ على حدَث يقع في الزمن الحاضر أو المستقبل، ويبدأ بأحد أحرف المضارعة (أ ن ي ت). يُرفَع إذا لم يسبقه ناصب أو جازم، وعلامة رفعه الضمة الظاهرة أو المقدَّرة، أو ثبوت النون في الأفعال الخمسة. يُنصَب إذا سبقه حرف نصب مثل (أن، لن، كي، إذَن)، وعلامة نصبه الفتحة الظاهرة أو المقدَّرة، أو حذف النون في الأفعال الخمسة. يُجزَم إذا سبقه حرف جزم مثل (لم، لا الناهية، لام الأمر)، وعلامة جزمه السكون، أو حذف حرف العلة، أو حذف النون في الأفعال الخمسة.",
+  examples:[
+    "يكتبُ الطالبُ الدرسَ. (مرفوع بالضمة الظاهرة)",
+    "لن يُهملَ التلميذُ واجبَه. (منصوب بالفتحة الظاهرة)",
+    "لم يذهبْ أحمدُ إلى المدرسةِ. (مجزوم بالسكون)",
+    "الطلابُ يلعبون في الفناء. (من الأفعال الخمسة، رفعه بثبوت النون)"
+  ],
+  quiz:[
+    {q:"«يجتهدُ الطالبُ في دروسه» - ما إعراب الفعل المضارع؟", o:["مرفوع بالضمة الظاهرة","منصوب بالفتحة","مجزوم بالسكون","مبني على الفتح"], a:0, e:"الفعل المضارع «يجتهد» لم يسبقه ناصب ولا جازم فهو مرفوع، وعلامة رفعه الضمة الظاهرة."},
+    {q:"أي الحروف التالية ينصب الفعل المضارع؟", o:["لم","لن","لا الناهية","لام الأمر"], a:1, e:"«لن» من حروف النصب، وتفيد نفي المستقبل، مثل: لن أتأخرَ."},
+    {q:"علامة جزم الفعل المضارع في «لم يلعبوا» هي:", o:["السكون","حذف النون","حذف حرف العلة","الفتحة"], a:1, e:"الفعل «يلعبوا» من الأفعال الخمسة (متصل بواو الجماعة)، فعلامة جزمه حذف النون."},
+    {q:"«الأولادُ يلعبون بالكرةِ» - علامة رفع الفعل المضارع:", o:["الضمة الظاهرة","ثبوت النون","تنوين الضم","السكون"], a:1, e:"«يلعبون» من الأفعال الخمسة، وعلامة رفعها ثبوت النون."}
+  ]
+},
+{
+  id:2, title:"الفاعل ونائب الفاعل",
+  explain:"الفاعل اسم مرفوع دائمًا، يدلّ على مَن قام بالفعل أو اتّصف به، ويأتي بعد فعل تامّ معلوم. أما نائب الفاعل فاسم مرفوع يحلّ محلّ الفاعل بعد حذفه من الجملة، ويأتي بعد فعل مبنيّ للمجهول، ويأخذ حكم الفاعل نفسه في الرفع.",
+  examples:[
+    "نجحَ الطالبُ المجتهدُ. (الطالبُ: فاعل مرفوع بالضمة)",
+    "كُتِبَ الدرسُ على السبورةِ. (الدرسُ: نائب فاعل مرفوع بالضمة)",
+    "يُكرَّمُ الفائزون في الحفل. (الفائزون: نائب فاعل مرفوع بالواو)",
+    "فُتِحَت النوافذُ صباحًا. (النوافذُ: نائب فاعل)"
+  ],
+  quiz:[
+    {q:"حدّدي الفاعل في: «زرعَ الفلاحُ الأرضَ»", o:["الفلاحُ","الأرضَ","زرعَ","الفلاحُ الأرضَ"], a:0, e:"«الفلاحُ» هو من قام بفعل الزرع، فهو الفاعل، وعلامة رفعه الضمة."},
+    {q:"«فُتِحَت النوافذُ صباحًا» - ما نوع «النوافذُ» إعرابًا؟", o:["فاعل","نائب فاعل","مفعول به","نعت"], a:1, e:"الفعل «فُتِحَت» مبني للمجهول، فحلّت «النوافذُ» محل الفاعل المحذوف، فهي نائب فاعل."},
+    {q:"عند تحويل «أكل الولدُ التفاحةَ» إلى المبني للمجهول، ما نائب الفاعل؟", o:["الولدُ","التفاحةُ","أكلَ","لا يوجد"], a:1, e:"تصبح الجملة: «أُكِلَت التفاحةُ»، فتنوب «التفاحةُ» عن الفاعل المحذوف وتُرفع."},
+    {q:"علامة رفع الفاعل في «جاء المعلمون»:", o:["الضمة","الواو","الألف","الياء"], a:1, e:"«المعلمون» جمع مذكر سالم، وعلامة رفعه الواو نيابة عن الضمة."}
+  ]
+},
+{
+  id:3, title:"المفعول به والمفعول المطلق",
+  explain:"المفعول به اسم منصوب يقع عليه فعل الفاعل. أما المفعول المطلق فهو مصدر منصوب يُذكر بعد فعل من لفظه غالبًا، ويأتي لأحد ثلاثة أغراض: توكيد الفعل (فرحتُ فرحًا)، أو بيان نوعه (سرتُ سيرَ الأبطال)، أو بيان عدده (ضربتُه ضربتين).",
+  examples:[
+    "قرأ الطالبُ الكتابَ. (الكتابَ: مفعول به منصوب)",
+    "انتصر الجيشُ انتصارًا عظيمًا. (انتصارًا: مفعول مطلق مبيّن للنوع)",
+    "ضربتُه ضربتين. (ضربتين: مفعول مطلق مبيّن للعدد)",
+    "فرحتُ فرحًا. (فرحًا: مفعول مطلق مؤكِّد للفعل)"
+  ],
+  quiz:[
+    {q:"«شربَ الطفلُ اللبنَ» - ما المفعول به؟", o:["الطفلُ","اللبنَ","شربَ","لا يوجد"], a:1, e:"«اللبنَ» هو ما وقع عليه فعل الشرب، فهو مفعول به منصوب."},
+    {q:"«احترمتُ المعلمَ احترامًا» - نوع المفعول المطلق:", o:["مؤكِّد للفعل","مبيّن للنوع","مبيّن للعدد","لا شيء مما سبق"], a:0, e:"جاء المصدر «احترامًا» بلا وصف ولا عدد، فهو لمجرد توكيد الفعل."},
+    {q:"«دُرتُ حول الملعب دورتين» - نوع المفعول المطلق:", o:["مؤكِّد","مبيّن للنوع","مبيّن للعدد","نعت"], a:2, e:"«دورتين» تدل على عدد مرات الدوران، فهي مفعول مطلق مبيّن للعدد."},
+    {q:"علامة نصب المفعول به في «رأيتُ المعلمين»:", o:["الفتحة","الياء","الألف","الكسرة"], a:1, e:"«المعلمين» جمع مذكر سالم، وعلامة نصبه الياء نيابة عن الفتحة."}
+  ]
+},
+{
+  id:4, title:"النعت الحقيقي والسببي",
+  explain:"النعت وصفٌ يُذكر لبيان صفة في الاسم الذي قبله (المنعوت)، ويتبعه في الإعراب رفعًا ونصبًا وجرًا، وفي التعريف والتنكير. والنعت الحقيقي يصف الاسمَ السابق مباشرة، ويتبعه أيضًا في التذكير والتأنيث والإفراد والتثنية والجمع. أما النعت السببي فيصف اسمًا يأتي بعده مرتبطًا بضمير يعود على المنعوت، ويتبع ما بعده في التذكير والتأنيث، بينما يتبع المنعوت في الإعراب والتعريف والتنكير فقط.",
+  examples:[
+    "جاء الطالبُ المجتهدُ. (نعت حقيقي مرفوع)",
+    "كافأتُ الطالبَ المجتهدَ. (نعت حقيقي منصوب)",
+    "هذا رجلٌ كريمةٌ أخلاقُه. (نعت سببي)",
+    "قابلتُ معلمةً نشيطًا أبناؤها. (نعت سببي)"
+  ],
+  quiz:[
+    {q:"حدّدي النعت في: «قابلتُ رجلًا كريمًا»", o:["رجلًا","كريمًا","قابلتُ","التاء في قابلت"], a:1, e:"«كريمًا» صفة تابعة لـ«رجلًا» في النصب والتنكير، فهو نعت."},
+    {q:"يتبع النعت الحقيقي منعوتَه في:", o:["الإعراب والتعريف فقط","العدد فقط","الإعراب والتعريف والعدد والنوع معًا","لا شيء مما سبق"], a:2, e:"النعت الحقيقي يطابق المنعوت في كل هذه الأوجه الأربعة."},
+    {q:"«هذه معلمةٌ نشيطٌ أبناؤها» - ما نوع النعت «نشيطٌ»؟", o:["حقيقي","سببي","توكيد","بدل"], a:1, e:"النعت هنا وصف اسمًا بعده (أبناؤها) لا المنعوت نفسه مباشرة، فهو نعت سببي."},
+    {q:"إعراب «المجتهدُ» في «نجح الطالبُ المجتهدُ»:", o:["نعت مرفوع","فاعل","مفعول به","بدل"], a:0, e:"«المجتهدُ» وصفٌ تابع لـ«الطالبُ» في الرفع والتعريف، فهو نعت مرفوع."}
+  ]
+},
+{
+  id:5, title:"التوكيد اللفظي والمعنوي",
+  explain:"التوكيد أسلوب يُستخدم لتقرير أمرٍ في ذهن السامع وإزالة أيّ شكّ عنه، وينقسم إلى نوعين: توكيد لفظي، ويكون بتكرار اللفظ نفسه اسمًا أو فعلًا أو حرفًا أو جملة. وتوكيد معنوي، ويكون بألفاظ معيّنة مثل (نفس، عين، كل، جميع، كلا، كلتا) مضافة إلى ضمير يعود على المؤكَّد.",
+  examples:[
+    "جاء جاء الطالبُ. (توكيد لفظي بتكرار الفعل)",
+    "نجح الطالبُ نفسُه. (توكيد معنوي)",
+    "حضر الطلابُ كلُّهم. (توكيد معنوي)",
+    "قرأتُ الكتابَ الكتابَ. (توكيد لفظي بتكرار الاسم)"
+  ],
+  quiz:[
+    {q:"«حضر المديرُ عينُه» - ما نوع التوكيد؟", o:["لفظي","معنوي","نعت","بدل"], a:1, e:"«عينُه» من ألفاظ التوكيد المعنوي التي تضاف إلى ضمير يعود على المؤكَّد."},
+    {q:"«نعم نعم سأذهبُ» - ما نوع التوكيد؟", o:["لفظي","معنوي","لا يوجد توكيد"], a:0, e:"تكرار الحرف «نعم» نفسه يجعله توكيدًا لفظيًا."},
+    {q:"أي مما يلي من ألفاظ التوكيد المعنوي؟", o:["نفس وعين","فقط ووحده","هنا وهناك","لا شيء مما سبق"], a:0, e:"نفس وعين وكل وجميع وكلا وكلتا من أشهر ألفاظ التوكيد المعنوي."},
+    {q:"«أكلَ الأولادُ الطعامَ كلَّه» - «كلَّه» توكيد:", o:["لفظي","معنوي","نعت سببي"], a:1, e:"«كلَّه» توكيد معنوي يفيد الشمول، وأضيفت إلى ضمير عائد على المؤكَّد."}
+  ]
+},
+{
+  id:6, title:"البدل وأنواعه",
+  explain:"البدل تابعٌ يُذكر بعد اسم سابق (يسمى المبدل منه) ليكون هو المقصود بالحكم، ويُعرب البدل بحسب موقعه في الجملة لا بحسب موقع المبدل منه. وله ثلاثة أنواع رئيسة: بدل مطابق (يطابق المبدل منه تمامًا في المعنى)، وبدل بعض من كل (يدل على جزء من المبدل منه)، وبدل اشتمال (يدل على صفة أو معنى مرتبط بالمبدل منه لا جزءًا منه).",
+  examples:[
+    "نجح صديقي خالدٌ. (بدل مطابق)",
+    "أكلتُ الرغيفَ نصفَه. (بدل بعض من كل)",
+    "أعجبني الطالبُ خلقُه. (بدل اشتمال)",
+    "قابلتُ المعلمَ عليًّا. (بدل مطابق)"
+  ],
+  quiz:[
+    {q:"«قابلتُ المعلمَ عليًّا» - ما نوع البدل؟", o:["مطابق","بعض من كل","اشتمال"], a:0, e:"«عليًّا» هو نفسه «المعلمَ»، فهما شيء واحد، فالبدل مطابق."},
+    {q:"«قرأتُ الكتابَ نصفَه» - ما نوع البدل؟", o:["مطابق","بعض من كل","اشتمال"], a:1, e:"«نصفَه» جزء من «الكتابَ» لا كلّه، فالبدل بعض من كل."},
+    {q:"«سررتُ بالطالبِ اجتهادِه» - ما نوع البدل؟", o:["مطابق","بعض من كل","اشتمال"], a:2, e:"«اجتهادِه» صفة معنوية مرتبطة بالطالب لا جزءًا منه، فالبدل بدل اشتمال."},
+    {q:"البدل يُعرب حسب:", o:["موقع المبدل منه دائمًا","موقعه هو في الجملة","لا يُعرب","موقع الفعل فقط"], a:1, e:"القاعدة أن البدل يأخذ إعرابه من موقعه في الجملة."}
+  ]
+},
+{
+  id:7, title:"الحال ومجيئها",
+  explain:"الحال اسم نكرة منصوب يبيّن هيئة صاحبه عند وقوع الفعل، وصاحب الحال يكون معرفة غالبًا. تأتي الحال على ثلاث صور: حال مفردة (كلمة واحدة)، أو حال جملة (اسمية أو فعلية)، أو حال شبه جملة (جار ومجرور أو ظرف).",
+  examples:[
+    "عاد الجنديُّ منتصرًا. (حال مفردة)",
+    "رأيتُ الهلالَ بازغًا. (حال مفردة)",
+    "جاء الطالبُ يجري. (حال جملة فعلية)",
+    "خرج الرجلُ وهو مسرورٌ. (حال جملة اسمية)"
+  ],
+  quiz:[
+    {q:"حدّدي الحال في: «عاد المسافرُ سالمًا»", o:["المسافرُ","سالمًا","عادَ","لا يوجد"], a:1, e:"«سالمًا» تبيّن هيئة المسافر وقت العودة، فهي حال منصوبة."},
+    {q:"ما نوع الحال في «جاء الطفلُ يبكي»؟", o:["مفردة","جملة فعلية","جملة اسمية","شبه جملة"], a:1, e:"«يبكي» جملة فعلية وقعت حالًا تبيّن هيئة الطفل عند المجيء."},
+    {q:"الحال في الإعراب تكون دائمًا:", o:["مرفوعة","منصوبة","مجرورة","مجزومة"], a:1, e:"الحال دائمًا اسم منصوب مهما كانت صورتها."},
+    {q:"صاحب الحال يكون غالبًا:", o:["نكرة","معرفة","فعلًا","حرفًا"], a:1, e:"الأصل أن يكون صاحب الحال معرفة، بينما الحال نفسها نكرة."}
+  ]
+},
+{
+  id:8, title:"همزة الوصل وهمزة القطع",
+  explain:"همزة الوصل تُنطق في بداية الكلام فقط وتسقط عند الوصل، وتُكتب دون رمز الهمزة (ا). تكون في: أمر الفعل الثلاثي (اكتبْ)، وماضي وأمر ومصدر الفعل الخماسي والسداسي (انطلقَ، انطلِقْ، انطلاقًا)، وفي عشرة أسماء معيّنة (اسم، ابن، ابنة، امرؤ، امرأة، اثنان، اثنتان...)، وفي «ال» التعريف. أما همزة القطع فتُنطق دائمًا في بداية الكلام ووصله، وتُكتب برمز واضح فوق أو تحت الألف (أ / إ)، وتكون في أول الفعل المضارع، وماضي وأمر الفعل الرباعي، وفي أغلب الأسماء والحروف.",
+  examples:[
+    "اذهبْ إلى المدرسةِ. (اذهب: وصل - إلى: قطع)",
+    "أكرمَ المعلمُ الطالبَ. (أكرم: قطع - فعل رباعي)",
+    "ابنُ خالدٍ مجتهدٌ. (ابن: وصل)",
+    "أنا أكتبُ الدرسَ. (أنا، أكتب: قطع)"
+  ],
+  quiz:[
+    {q:"«اكتبْ واجبَك» - نوع همزة «اكتب»:", o:["همزة وصل","همزة قطع"], a:0, e:"أمر الفعل الثلاثي (كتب) همزته همزة وصل."},
+    {q:"«أحسنَ الطالبُ التصرفَ» - نوع همزة «أحسن»:", o:["همزة وصل","همزة قطع"], a:1, e:"«أحسن» فعل ماضٍ رباعي (أحسن - يُحسن)، وهمزته همزة قطع."},
+    {q:"أي الكلمات همزتها همزة قطع دائمًا؟", o:["اسم","ابن","أخ","امرأة"], a:2, e:"«أخ» ليست من الأسماء العشرة ذات همزة الوصل، فهمزتها همزة قطع."},
+    {q:"كيف تُكتب همزة القطع؟", o:["بلا رمز فوق الألف","برمز واضح: أ أو إ","بالمدّ فقط","لا تُكتب"], a:1, e:"تُميَّز همزة القطع بكتابة رمز الهمزة فوق الألف أو تحتها."}
+  ]
+}
+];
+
+/* ---------- render home lesson chips ---------- */
+const homeGrid = document.getElementById('home-lesson-grid');
+LESSONS.forEach(l=>{
+  const d = document.createElement('div');
+  d.className='lesson-chip';
+  d.innerHTML = `<span class="num">${String(l.id).padStart(2,'0')}</span><span class="name">${l.title}</span>`;
+  d.addEventListener('click', ()=>{ switchView('lessons'); openLesson(l.id); });
+  homeGrid.appendChild(d);
+});
+
+/* ---------- render lessons ---------- */
+const lessonsList = document.getElementById('lessons-list');
+LESSONS.forEach(l=>{
+  const wrap = document.createElement('div');
+  wrap.className='lesson';
+  wrap.id = 'lesson-'+l.id;
+
+  const exHTML = l.examples.map(e=>`<li>${e}</li>`).join('');
+  let miniQuizHTML = '';
+  l.quiz.forEach((qq,i)=>{
+    const opts = qq.o.map((op,oi)=>`<button class="opt" data-oi="${oi}">${op}</button>`).join('');
+    miniQuizHTML += `
+      <div class="qcard" data-lesson="${l.id}" data-qi="${i}">
+        <div class="qtext">${i+1}. ${qq.q}</div>
+        ${opts}
+        <div class="explain"></div>
+      </div>`;
+  });
+
+  wrap.innerHTML = `
+    <div class="lesson-head">
+      <div class="badge">${l.id}</div>
+      <h3>${l.title}</h3>
+      <span class="arrow">▾</span>
+    </div>
+    <div class="lesson-body">
+      <h4>القاعدة</h4>
+      <p>${l.explain}</p>
+      <h4>أمثلة معربة</h4>
+      <ul class="examples">${exHTML}</ul>
+      <h4>تدريب سريع</h4>
+      ${miniQuizHTML}
+    </div>`;
+  lessonsList.appendChild(wrap);
+
+  wrap.querySelector('.lesson-head').addEventListener('click', ()=>{
+    wrap.classList.toggle('open');
+  });
+});
+
+function openLesson(id){
+  document.querySelectorAll('.lesson').forEach(l=>l.classList.remove('open'));
+  const el = document.getElementById('lesson-'+id);
+  if(el){
+    el.classList.add('open');
+    setTimeout(()=> el.scrollIntoView({behavior:'smooth', block:'start'}), 60);
+  }
+}
+
+/* option click handler for mini-quizzes (event delegation) */
+lessonsList.addEventListener('click', (ev)=>{
+  const btn = ev.target.closest('.opt');
+  if(!btn) return;
+  const card = btn.closest('.qcard');
+  if(card.dataset.answered) return;
+  card.dataset.answered = "1";
+  const lessonId = card.dataset.lesson, qi = card.dataset.qi;
+  const qq = LESSONS.find(l=>l.id==lessonId).quiz[qi];
+  const allOpts = card.querySelectorAll('.opt');
+  allOpts.forEach((o,i)=>{
+    o.disabled = true;
+    if(i==qq.a) o.classList.add('correct');
+    else if(o===btn) o.classList.add('wrong');
+  });
+  const ex = card.querySelector('.explain');
+  ex.textContent = qq.e;
+  ex.classList.add('show');
+});
+
+/* ---------- build full quiz bank ---------- */
+let QUIZBANK = [];
+LESSONS.forEach(l=> l.quiz.forEach(q=> QUIZBANK.push({...q, lesson:l.title})));
+document.getElementById('q-total').textContent = QUIZBANK.length;
+
+let qIndex = 0, score = 0;
+const quizHolder = document.getElementById('quiz-holder');
+const scoreBanner = document.getElementById('score-banner');
+
+function renderQuizQuestion(){
+  scoreBanner.classList.remove('show');
+  quizHolder.style.display='block';
+  document.querySelector('.quiz-toolbar').style.display='flex';
+  if(qIndex >= QUIZBANK.length){ finishQuiz(); return; }
+  document.getElementById('q-index').textContent = qIndex+1;
+  const qq = QUIZBANK[qIndex];
+  const opts = qq.o.map((op,oi)=>`<button class="opt" data-oi="${oi}">${op}</button>`).join('');
+  quizHolder.innerHTML = `
+    <div class="qcard">
+      <div class="qtext" style="color:var(--gold);font-size:11.5px;font-weight:700;margin-bottom:4px;">${qq.lesson}</div>
+      <div class="qtext">${qq.q}</div>
+      ${opts}
+      <div class="explain"></div>
+    </div>`;
+}
+
+quizHolder.addEventListener('click', (ev)=>{
+  const btn = ev.target.closest('.opt');
+  if(!btn) return;
+  const card = btn.closest('.qcard');
+  if(card.dataset.answered) return;
+  card.dataset.answered = "1";
+  const qq = QUIZBANK[qIndex];
+  const oi = parseInt(btn.dataset.oi);
+  const allOpts = card.querySelectorAll('.opt');
+  allOpts.forEach((o,i)=>{
+    o.disabled = true;
+    if(i==qq.a) o.classList.add('correct');
+    else if(i==oi) o.classList.add('wrong');
+  });
+  if(oi === qq.a) score++;
+  const ex = card.querySelector('.explain');
+  ex.textContent = qq.e;
+  ex.classList.add('show');
+
+  const nextBtn = document.createElement('button');
+  nextBtn.className='btn';
+  nextBtn.style.marginTop='12px';
+  nextBtn.textContent = (qIndex === QUIZBANK.length-1) ? 'عرض النتيجة' : 'السؤال التالي';
+  nextBtn.addEventListener('click', ()=>{ qIndex++; renderQuizQuestion(); });
+  card.appendChild(nextBtn);
+});
+
+function finishQuiz(){
+  quizHolder.style.display='none';
+  document.querySelector('.quiz-toolbar').style.display='none';
+  scoreBanner.classList.add('show');
+  document.getElementById('score-big').textContent = `${score} / ${QUIZBANK.length}`;
+  const pct = Math.round(score/QUIZBANK.length*100);
+  let msg = '';
+  if(pct>=85) msg='ممتاز! إتقان واضح لقواعد النحو.';
+  else if(pct>=60) msg='جيد جدًا، يُنصح بمراجعة الدروس التي أُخطئ فيها.';
+  else msg='يُنصح بإعادة قراءة الدروس قبل إعادة الاختبار.';
+  document.getElementById('score-msg').textContent = `نسبة الإجابات الصحيحة: ${pct}٪ — ${msg}`;
+}
+
+function resetQuiz(){ qIndex=0; score=0; renderQuizQuestion(); }
+document.getElementById('restart-quiz').addEventListener('click', resetQuiz);
+document.getElementById('retry-btn').addEventListener('click', resetQuiz);
+resetQuiz();
+
+/* ---------- infographic flip cards ---------- */
+const flipGrid = document.getElementById('flip-grid');
+LESSONS.forEach(l=>{
+  const card = document.createElement('div');
+  card.className='flip';
+  const backPoints = l.examples.slice(0,3).map(e=>`• ${e}`).join('<br>');
+  card.innerHTML = `
+    <div class="flip-inner">
+      <div class="flip-face flip-front">
+        <div class="n">${String(l.id).padStart(2,'0')}</div>
+        <div class="t">${l.title}</div>
+        <div class="h">اضغطي لعرض الملخص</div>
+      </div>
+      <div class="flip-face flip-back">
+        <b>أمثلة سريعة</b>
+        ${backPoints}
+      </div>
+    </div>`;
+  card.addEventListener('click', ()=> card.classList.toggle('on'));
+  flipGrid.appendChild(card);
+});
+
+/* ---------- videos ---------- */
+const videoGrid = document.getElementById('video-grid');
+const playIcon = `<svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="#C79A3D"/></svg>`;
+LESSONS.forEach(l=>{
+  const a = document.createElement('a');
+  a.className='vcard';
+  a.target='_blank'; a.rel='noopener';
+  a.href = 'https://www.youtube.com/results?search_query=' + encodeURIComponent('شرح ' + l.title + ' الصف السادس الابتدائي');
+  a.innerHTML = `
+    <div class="vthumb">${playIcon}</div>
+    <div class="vt"><b>${l.title}</b><span>بحث فيديوهات شرح هذا الدرس على يوتيوب</span></div>
+    <div class="go">‹</div>`;
+  videoGrid.appendChild(a);
+});
+
+/* ---------- tabs ---------- */
+function switchView(name){
+  document.querySelectorAll('nav.tabs button').forEach(b=> b.classList.toggle('active', b.dataset.view===name));
+  document.querySelectorAll('section.view').forEach(s=> s.classList.toggle('active', s.id==='view-'+name));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.getElementById('tabs').addEventListener('click', (ev)=>{
+  const btn = ev.target.closest('button');
+  if(!btn) return;
+  switchView(btn.dataset.view);
+});
+</script>
+</body>
+</html>
